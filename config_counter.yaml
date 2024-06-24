@@ -1,0 +1,33 @@
+http:
+  address: 0.0.0.0:4195
+  enabled: true
+  root_path: /benthos
+  debug_endpoints: false
+
+# input:
+#   label: "word_input"
+#   stdin:
+#     scanner:
+#       lines: {}
+#     auto_replay_nacks: true
+
+input:
+  label: "word_input"
+  http_server:
+    address: ""
+    path: /post
+    ws_path: /post/ws
+    allowed_verbs:
+      - POST
+    timeout: 5s
+    rate_limit: ""
+
+pipeline:
+  processors:
+      - type: "wordcounter"
+
+
+output:
+  label: "word_output"
+  stdout:
+    codec: lines
